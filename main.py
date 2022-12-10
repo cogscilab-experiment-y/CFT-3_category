@@ -65,6 +65,7 @@ def block(config, images, block_type, win, fixation, clock, screen_res, answers,
     n = -1
     for trial in images:
         answer = []
+        clicked_buttons = []
         reaction_time = None
         acc = -1
         n += 1
@@ -104,9 +105,11 @@ def block(config, images, block_type, win, fixation, clock, screen_res, answers,
                         answer.append(str(k))
                         if len(answer) == config["n_answers"]:
                             break
+                        clicked_buttons.append(k)
+                        ans_button.borderWidth = config["answer_box_width"]
                     elif ans_button.contains(mouse):
                         ans_button.borderWidth = config["answer_box_width"]
-                    else:
+                    elif k not in clicked_buttons:
                         ans_button.borderWidth = 0
                 check_exit()
                 win.flip()
@@ -160,6 +163,8 @@ def block(config, images, block_type, win, fixation, clock, screen_res, answers,
         else:
             correct_answer = str(answers.loc[(answers['item_type'] == block_type) &
                                              (answers['item_id'] == trial["image_ID"])]['answer'].iloc[0])
+            if answer:
+                answer = answer[0]
         if answer:
             acc = 1 if answer == correct_answer else 0
         trial_results = {"n": n, "block_type": block_type,
