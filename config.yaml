@@ -1,4 +1,4 @@
-procedure_test: True
+procedure_test: False
 randomize_trails: False
 do_training: False
 n_answers: 2 # number of answers per trial
